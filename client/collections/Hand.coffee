@@ -2,10 +2,15 @@ class window.Hand extends Backbone.Collection
 
   model: Card
 
-  initialize: (array, @deck, @isDealer) ->
+  initialize: (array, @deck, @isDealer) -> 
+    @.trigger('blackjack') if @.scores is 21
 
   hit: ->
     @add(@deck.pop()).last()
+    @.trigger('bust') if @.scores > 21
+
+  stand: ->
+    @.trigger('stand')
 
   scores: ->
     # The scores are an array of potential scores.
