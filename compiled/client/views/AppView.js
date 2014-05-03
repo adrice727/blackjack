@@ -23,9 +23,9 @@
 
     AppView.prototype.initialize = function() {
       this.render();
-      return this.model.on('change', (function(_this) {
+      return this.model.on('change:handStatus', (function(_this) {
         return function() {
-          return _this.render;
+          return _this.displayResult;
         };
       })(this));
     };
@@ -39,6 +39,15 @@
       return this.$('.dealer-hand-container').html(new HandView({
         collection: this.model.get('dealerHand')
       }).el);
+    };
+
+    AppView.prototype.displayResult = function() {
+      if (this.model.get('handStatus') === 'playerBlackjack') {
+        alert("Blackjack!!! You win!!!");
+      }
+      if (this.model.get('handStatus') === 'dealerBlackjack') {
+        return alert("Dealer Blackjack.  You lost.  You're a loser");
+      }
     };
 
     return AppView;

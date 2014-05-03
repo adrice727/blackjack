@@ -13,7 +13,7 @@ class window.AppView extends Backbone.View
 
   initialize: ->
     @render()
-    @model.on 'change', => @render
+    @model.on 'change:handStatus', => @displayResult
 
 
   render: ->
@@ -21,3 +21,8 @@ class window.AppView extends Backbone.View
     @$el.html @template()
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
+
+  displayResult: ->
+    alert "Blackjack!!! You win!!!" if @model.get('handStatus') is 'playerBlackjack'
+    alert "Dealer Blackjack.  You lost.  You're a loser" if @model.get('handStatus') is 'dealerBlackjack'
+

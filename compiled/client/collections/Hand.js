@@ -15,7 +15,11 @@
     Hand.prototype.initialize = function(array, deck, isDealer) {
       this.deck = deck;
       this.isDealer = isDealer;
-      if (this.scores === 21) {
+      return this.on('add', this.checkForBlackjack());
+    };
+
+    Hand.prototype.checkForBlackjack = function() {
+      if (this.length === 2 && this.scores() === 21) {
         return this.trigger('blackjack');
       }
     };
@@ -40,7 +44,7 @@
         return score + (card.get('revealed') ? card.get('value') : 0);
       }, 0);
       if (hasAce) {
-        return [score, score + 10];
+        return [score + 10, score];
       } else {
         return [score];
       }

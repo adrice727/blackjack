@@ -24,6 +24,7 @@ window.App = (function(_super) {
   };
 
   App.prototype.blackjackCloseOut = function() {
+    alert("blackjack things . . .");
     if (this.get('playerHand').scores === 21 && this.get('dealerHand').scores === !21) {
       this.set('handStatus', 'playerBlackjack');
     }

@@ -12,6 +12,7 @@ class window.App extends Backbone.Model
 
 
   blackjackCloseOut: ->
+    alert "blackjack things . . ."
     @set 'handStatus', 'playerBlackjack' if @.get('playerHand').scores is 21 and @.get('dealerHand').scores is not 21
     @set 'handStatus', 'dealerBlackjack' if @.get('playerHand').scores is not 21 and @.get('dealerHand').scores is 21
     @set 'handStatus', 'push' if @.get('playerHand').scores is 21 and @.get('dealerHand').scores is 21

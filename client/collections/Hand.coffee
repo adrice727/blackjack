@@ -3,14 +3,18 @@ class window.Hand extends Backbone.Collection
   model: Card
 
   initialize: (array, @deck, @isDealer) -> 
-    @.trigger('blackjack') if @.scores is 21
+    # debugger
+    @on('add', @checkForBlackjack() )
+
+  checkForBlackjack: ->
+    @trigger('blackjack') if @length is 2 and @scores() is 21   
 
   hit: ->
     @add(@deck.pop()).last()
-    @.trigger('bust') if @.scores > 21
+    @trigger('bust') if @.scores > 21
 
   stand: ->
-    @.trigger('stand')
+    @trigger('stand')
 
   scores: ->
     # The scores are an array of potential scores.
@@ -22,4 +26,4 @@ class window.Hand extends Backbone.Collection
     score = @reduce (score, card) ->
       score + if card.get 'revealed' then card.get 'value' else 0
     , 0
-    if hasAce then [score, score + 10] else [score]
+    if hasAce then [score + 10, score] else [score]  #changed the order of the array from [score, score + 10]
