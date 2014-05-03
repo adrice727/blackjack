@@ -7,6 +7,7 @@ window.App = (function(_super) {
   __extends(App, _super);
 
   function App() {
+    this.playerStands = __bind(this.playerStands, this);
     this.blackjackCloseOut = __bind(this.blackjackCloseOut, this);
     this.checkForBlackjack = __bind(this.checkForBlackjack, this);
     return App.__super__.constructor.apply(this, arguments);
@@ -18,25 +19,43 @@ window.App = (function(_super) {
     this.set('playerHand', deck.dealPlayer());
     this.set('dealerHand', deck.dealDealer());
     this.set('handStatus', 'open');
-    return this.get('deck').on('dealPlayer', setTimeout(this.checkForBlackjack, 1500));
+    this.get('deck').on('dealPlayer', setTimeout(this.checkForBlackjack, 1500));
+    return this.get('playerHand').on('stand', (function(_this) {
+      return function() {
+        return _this.playerStands();
+      };
+    })(this));
   };
 
   App.prototype.checkForBlackjack = function() {
-    if (this.get('playerHand').scores() > 10) {
+    console.log(this.get('dealerHand').scores()[0]);
+    if (this.get('playerHand').scores()[0] === 21) {
       return setTimeout(this.blackjackCloseOut, 1500);
     }
   };
 
   App.prototype.blackjackCloseOut = function() {
-    if (this.get('playerHand').scores() > 20 && this.get('dealerHand').scores() < 21) {
-      this.set('handStatus', 'playerBlackjack');
+    if (this.get('playerHand').scores()[0] === 21) {
+      return this.set('handStatus', 'playerBlackjack');
     }
-    if (this.get('playerHand').scores() < 21 && this.get('dealerHand').scores() > 20) {
+  };
+
+  App.prototype.playerStands = function() {
+    var playerScore, _results;
+    setTimeout(((function(_this) {
+      return function() {
+        return _this.get('dealerHand').models[0].flip();
+      };
+    })(this)), 500);
+    playerScore = this.get('playerHand').scores()[0];
+    if (this.get('dealerHand').scores()[0] === 21 && playerScore === !21) {
       this.set('handStatus', 'dealerBlackjack');
     }
-    if (this.get('playerHand').scores() > 20 && this.get('dealerHand').scores() > 20) {
-      return this.set('handStatus', 'push');
+    _results = [];
+    while (this.get('dealerHand').scores()[0] < 17 && this.get('dealerHand').scores()[0] < playerScore && this.get('dealerHand').scores()[1] < 17 && this.get('dealerHand').scores()[1] < playerScore) {
+      _results.push(this.get('dealerHand').hit());
     }
+    return _results;
   };
 
   return App;
