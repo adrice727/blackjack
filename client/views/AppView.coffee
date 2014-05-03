@@ -13,8 +13,9 @@ class window.AppView extends Backbone.View
 
   initialize: ->
     @render()
-    @model.on 'change:handStatus', => @displayResult
-
+    # Need a way to update the view when the hand is over but this updates on every change
+    # including initialization
+    @model.on 'change:handStatus', @checkForHandOver
 
   render: ->
     @$el.children().detach()
@@ -22,7 +23,12 @@ class window.AppView extends Backbone.View
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
 
-  displayResult: ->
+  #not sure why I need to use double arrow as opposed to single arrow here
+  checkForHandOver: =>
+    @displayResult() if @model.get('handStatus')
+
+  #Player Blackjack win is working.
+  displayResult: =>
     alert "Blackjack!!! You win!!!" if @model.get('handStatus') is 'playerBlackjack'
     alert "Dealer Blackjack.  You lost.  You're a loser" if @model.get('handStatus') is 'dealerBlackjack'
 
