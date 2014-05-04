@@ -29,6 +29,7 @@ class window.AppView extends Backbone.View
     @displayResult()
 
   displayResult: =>
+    console.log 'here and there' , @model.get('handStatus')
     alert 'Blackjack!!! You win!!!' if @model.get('handStatus') is 'playerBlackjack'
     alert 'Dealer Blackjack. You lost' if @model.get('handStatus') is 'dealerBlackjack'
     alert 'Bust. You went over 21.' if @model.get('handStatus') is 'playerBust'

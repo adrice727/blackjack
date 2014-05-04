@@ -46,6 +46,7 @@ window.AppView = (function(_super) {
   };
 
   AppView.prototype.displayResult = function() {
+    console.log('here and there', this.model.get('handStatus'));
     if (this.model.get('handStatus') === 'playerBlackjack') {
       alert('Blackjack!!! You win!!!');
     }
