@@ -8,30 +8,73 @@ class window.App extends Backbone.Model
     @set 'handStatus', 'open'
 
     # check for player blackjack
-    @get('deck').on 'dealPlayer', setTimeout(@checkForBlackjack, 1500)
+    @get('deck').on 'dealPlayer', setTimeout(@checkForBlackjack, 1000)
     @get('playerHand').on 'stand', () => @playerStands()
+    @get('playerHand').on 'hit', () => @checkForBust()
+    @get('dealerHand').on 'hit', () => @checkForBust()
+
 
   checkForBlackjack: =>
-    console.log @get('dealerHand').scores()[0]
-    if @get('playerHand').scores()[0] is 21 then setTimeout( @blackjackCloseOut , 1500)
+    if @get('playerHand').scores()[0] is 21 and @get('playerHand').length is 2 then setTimeout( @blackjackCloseOut , 500)
 
   blackjackCloseOut: =>
-    @set 'handStatus', 'playerBlackjack' if @get('playerHand').scores()[0] is 21
-    # @set 'handStatus', 'dealerBlackjack' if @get('dealerHand').scores()[0] is 21 and @get('playerHand').scores()[0] is not 21
-    # @set 'handStatus', 'push' if @get('playerHand').scores()[0] is 20 and @get('dealerHand').scores()[0] is 21
+    @set 'handStatus', 'playerBlackjack' if @get('playerHand').scores()[0] is 21 
+  
+  checkForBust: =>
+    playerScore = @get('playerHand').scores()[0]
+    dealerScore = @get('dealerHand').scores()[0]
+    dealerHandLength = @get('dealerHand').length
+    if playerScore > 21
+      @set 'handStatus', 'playerBust'
+      return
+    if dealerScore > 21
+      @set 'handStatus', 'dealerBust'
+      return
+    if dealerScore is 21 and dealerHandLength is 2 and playerScore is not 21
+      @set 'handStatus', 'dealerBlackjack'
+      return
+    if dealerScore > playerScore
+      @set 'handStatus', 'dealerWin'
+      return
+    if dealerScore is playerScore  
+      @set 'handStatus', 'push'
+      
+    # @set 'handStatus', 'playerBust' if playerScore > 21
+    # @set 'handStatus', 'dealerBust' if dealerScore > 21
+    # @set 'handStatus', 'dealerBlackjack' if dealerScore is 21 and dealerHandLength is 2 and playerScore is not 21
+    # @set 'handStatus', 'dealerWin' if dealerScore > playerScore
+    # @set 'handStatus', 'push' if dealerScore is playerScore
+
+    # switch @set('handStatus')
+    #   when playerScore > 21 then 'playerBust'
+    #   when dealerScore > 21 then'dealerBust'
+    #   when dealerScore is 21 and dealerHandLength is 2 and playerScore is not 21 then 'dealerBlackjack'
+    #   when dealerScore > playerScore then 'dealerWin'
+    #   when dealerScore is playerScore then 'push'
 
   playerStands: =>
-    setTimeout( (() => @get('dealerHand').models[0].flip()), 500)
-    # @get('dealerHand').hit()
-
-    # dealerScoreHard = @get('dealerHand').scores()[0]
-    # dealerScoreSoft = @get('dealerHand').scores()[1] 
-    playerScore = @get('playerHand').scores()[0]
-
-    @set 'handStatus', 'dealerBlackjack' if @get('dealerHand').scores()[0] is 21 and playerScore is not 21
     
-    @get('dealerHand').hit() while @get('dealerHand').scores()[0] < 17 and @get('dealerHand').scores()[0] < playerScore and
-      @get('dealerHand').scores()[1] < 17 and @get('dealerHand').scores()[1] < playerScore
+    playerScore = @get('playerHand').scores()[0]
+    dealerScore = @get('dealerHand').scores()[0]
+    dealerHandLength = @get('dealerHand').length
+
+    setTimeout( (() => 
+      @get('dealerHand').models[0].flip()), 500)
+
+    @checkForBust
+
+    dealerCloseOut = () =>
+      @get('dealerHand').hit()
+      return unless @get('handStatus') is 'open' or @get('dealerHand').scores()[0] < 17
+      setTimeout dealerCloseOut, 500
+    
+    setTimeout dealerCloseOut, 500 
+
+
+
+
+
+
     
 
 

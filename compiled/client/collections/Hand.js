@@ -9,6 +9,7 @@
 
     function Hand() {
       this.stand = __bind(this.stand, this);
+      this.hit = __bind(this.hit, this);
       return Hand.__super__.constructor.apply(this, arguments);
     }
 
@@ -20,7 +21,8 @@
     };
 
     Hand.prototype.hit = function() {
-      return this.add(this.deck.pop()).last();
+      this.add(this.deck.pop()).last();
+      return this.trigger('hit');
     };
 
     Hand.prototype.stand = function() {

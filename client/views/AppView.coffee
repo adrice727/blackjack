@@ -23,12 +23,16 @@ class window.AppView extends Backbone.View
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
 
-  #not sure why I need to use double arrow as opposed to single arrow here
   checkForHandOver: =>
-    @displayResult() if @model.get('handStatus')
+    console.log 'getting HERE'
+    console.log @model.get('handStatus')
+    @displayResult()
 
-  #Player Blackjack win is working.
   displayResult: =>
-    alert "Blackjack!!! You win!!!" if @model.get('handStatus') is 'playerBlackjack'
-    alert "Dealer Blackjack.  You lost.  You're a loser" if @model.get('handStatus') is 'dealerBlackjack'
+    alert 'Blackjack!!! You win!!!' if @model.get('handStatus') is 'playerBlackjack'
+    alert 'Dealer Blackjack. You lost' if @model.get('handStatus') is 'dealerBlackjack'
+    alert 'Bust. You went over 21.' if @model.get('handStatus') is 'playerBust'
+    alert 'Dealer busts. You win!!!' if @model.get('handStatus') is 'dealerBust'
+    alert 'Dealer wins.' if @model.get('handStatus') is 'dealerWin'
+    alert 'Push. Player and dealer have same score' if @model.get('handStatus') is 'push'
 

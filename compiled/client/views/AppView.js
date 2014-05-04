@@ -41,17 +41,29 @@
     };
 
     AppView.prototype.checkForHandOver = function() {
-      if (this.model.get('handStatus')) {
-        return this.displayResult();
-      }
+      console.log('getting HERE');
+      console.log(this.model.get('handStatus'));
+      return this.displayResult();
     };
 
     AppView.prototype.displayResult = function() {
       if (this.model.get('handStatus') === 'playerBlackjack') {
-        alert("Blackjack!!! You win!!!");
+        alert('Blackjack!!! You win!!!');
       }
       if (this.model.get('handStatus') === 'dealerBlackjack') {
-        return alert("Dealer Blackjack.  You lost.  You're a loser");
+        alert('Dealer Blackjack. You lost');
+      }
+      if (this.model.get('handStatus') === 'playerBust') {
+        alert('Bust. You went over 21.');
+      }
+      if (this.model.get('handStatus') === 'dealerBust') {
+        alert('Dealer busts. You win!!!');
+      }
+      if (this.model.get('handStatus') === 'dealerWin') {
+        alert('Dealer wins.');
+      }
+      if (this.model.get('handStatus') === 'push') {
+        return alert('Push. Player and dealer have same score');
       }
     };
 
