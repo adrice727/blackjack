@@ -47,6 +47,7 @@
     };
 
     AppView.prototype.displayResult = function() {
+      console.log('here and there', this.model.get('handStatus'));
       if (this.model.get('handStatus') === 'playerBlackjack') {
         alert('Blackjack!!! You win!!!');
       }
@@ -62,9 +63,13 @@
       if (this.model.get('handStatus') === 'dealerWin') {
         alert('Dealer wins.');
       }
-      if (this.model.get('handStatus') === 'push') {
-        return alert('Push. Player and dealer have same score');
+      if (this.model.get('handStatus') === 'playerWin') {
+        alert('Player wins.');
       }
+      if (this.model.get('handStatus') === 'push') {
+        alert('Push. Player and dealer have same score');
+      }
+      return setTimeout(location.reload(), 500);
     };
 
     return AppView;

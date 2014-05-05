@@ -62,9 +62,13 @@ window.AppView = (function(_super) {
     if (this.model.get('handStatus') === 'dealerWin') {
       alert('Dealer wins.');
     }
-    if (this.model.get('handStatus') === 'push') {
-      return alert('Push. Player and dealer have same score');
+    if (this.model.get('handStatus') === 'playerWin') {
+      alert('Player wins.');
     }
+    if (this.model.get('handStatus') === 'push') {
+      alert('Push. Player and dealer have same score');
+    }
+    return setTimeout(location.reload(), 500);
   };
 
   return AppView;

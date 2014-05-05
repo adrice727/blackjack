@@ -71,8 +71,12 @@ window.App = (function(_super) {
       this.set('handStatus', 'dealerWin');
       return;
     }
+    if (dealerScore >= 17 && dealerScore < playerScore) {
+      this.set('handStatus', 'playerWin');
+      return;
+    }
     if (dealerScore === playerScore) {
-      return this.set('handStatus', 'push');
+      this.set('handStatus', 'push');
     }
   };
 

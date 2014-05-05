@@ -36,8 +36,12 @@ class window.App extends Backbone.Model
     if dealerScore > playerScore
       @set 'handStatus', 'dealerWin'
       return
+    if dealerScore >=17 and dealerScore < playerScore
+      @set 'handStatus', 'playerWin'
+      return  
     if dealerScore is playerScore  
       @set 'handStatus', 'push'
+      return
       
     # @set 'handStatus', 'playerBust' if playerScore > 21
     # @set 'handStatus', 'dealerBust' if dealerScore > 21

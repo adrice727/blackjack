@@ -35,5 +35,7 @@ class window.AppView extends Backbone.View
     alert 'Bust. You went over 21.' if @model.get('handStatus') is 'playerBust'
     alert 'Dealer busts. You win!!!' if @model.get('handStatus') is 'dealerBust'
     alert 'Dealer wins.' if @model.get('handStatus') is 'dealerWin'
+    alert 'Player wins.' if @model.get('handStatus') is 'playerWin'
     alert 'Push. Player and dealer have same score' if @model.get('handStatus') is 'push'
+    setTimeout location.reload(), 500
 
